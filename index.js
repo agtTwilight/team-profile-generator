@@ -11,7 +11,6 @@ const constructTeamMember = require('./util/constructTeamMember')
 const generateHtml = require('./util/generateHtml')
 
 const writePromise = util.promisify(fs.writeFile);
-const readPromise = util.promisify(fs.readFile);
 // const addTeamMemberPromise = util.promisify(addTeamMember);
 
 let teamArr = [];
@@ -19,7 +18,7 @@ let teamArr = [];
 // Get team manager then after do something
 const init = async () => {
         try{
-                // get manager info
+                // get manager data
                 let newMember = await inquirer.prompt([
                         {
                                 type: 'input',
@@ -43,25 +42,26 @@ const init = async () => {
                         },
                 ])
 
+                // Add type key w/ manager value to manager data obj
                 newMember["type"] = "manager"
 
-                // construct manager & push to team
+                // Construct manager & push to teamArr
                 constructTeamMember(newMember, teamArr);
                 
-                // add new team members
+                // Create new member data
                 newMember = await addTeamMember();
 
-                while (newMember.confirm) {
-                        // Construct new member and add them to the team!
+                // while loop that executes until user selects "exit"
+                while (newMember != "exit") {
+                        // Construct newMember and add them to teamArr!
                         constructTeamMember(newMember, teamArr);
-                        // Add new member if applicable
+                        // Create new member and repeat loop
                         newMember = await addTeamMember();
                 }
 
-                // contruct and add most recent member
-                constructTeamMember(newMember, teamArr);
-
-                console.log(generateHtml(teamArr))
+                // Write html file with teamArr data
+                await writePromise("team.html", generateHtml(teamArr))
+                console.log("Your team has been generated!")
         } catch (err) {
                 console.log(err)
         }
