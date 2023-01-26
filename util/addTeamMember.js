@@ -7,7 +7,7 @@ const addTeamMember = async () => {
                                 type: 'list',
                                 name: 'type',
                                 message: 'What team member would you like to add?',
-                                choices: ['engineer', 'intern']
+                                choices: ['engineer', 'intern', 'exit']
                          }
                 ])
                 
@@ -35,13 +35,8 @@ const addTeamMember = async () => {
                                         name: 'github',
                                         message: "What is their github username?"
                                 },
-                                {
-                                        type: 'confirm',
-                                        name: 'confirm',
-                                        message: 'Would you like to add another team member?',
-                                 },
                         ])
-                } else {
+                } else if (memberType.type === "intern"){
                         memberInfo = await inquirer.prompt([
                                 {
                                         type: 'input',
@@ -63,12 +58,9 @@ const addTeamMember = async () => {
                                         name: 'school',
                                         message: "What school do/did they go to?"
                                 },
-                                {
-                                        type: 'confirm',
-                                        name: 'confirm',
-                                        message: 'Would you like to add another team member?',
-                                 },
                         ])
+                } else {
+                        return "exit"
                 }
 
                 memberInfo["type"] = memberType.type
