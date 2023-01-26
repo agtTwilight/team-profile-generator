@@ -31,7 +31,7 @@ after `npm install`, right click on the `index.js` file and select `Open in Inte
 MIT
         
 ## Tests
-n/a
+`npm test` command in the Integrated Terminal will run tests for all constructor classes.
         
 ## Questions
 Contact me: 
